@@ -11,7 +11,7 @@ distance_history = deque(maxlen=5)  # Store last 5 front distances
 
 # === Safe Stop ===
 def stop_robot(signum=None, frame=None):
-    print("\n[🛑] Stopping robot safely")
+    print("\n Stopping robot safely")
     fc.stop()
     sys.exit(0)
 
@@ -49,21 +49,21 @@ def is_approaching(distances, min_drop=5):
 # === Main Loop ===
 def main():
     global last_turn
-    print("🚀 Mode: Predictive Obstacle Avoidance with Curved Turns")
+    print(" Mode: Predictive Obstacle Avoidance with Curved Turns")
 
     while True:
         scan_list = fc.scan_step(35)
         if not scan_list:
             continue
 
-        print("📡 Scan:", scan_list)
+        print(" Scan:", scan_list)
         distance = fc.get_distance_at(0)
         distance_history.append(distance)
-        print(f"📏 Front Distance: {distance} cm | History: {list(distance_history)}")
+        print(f" Front Distance: {distance} cm | History: {list(distance_history)}")
 
         # === Predictive Obstacle Detection ===
         if is_approaching(distance_history):
-            print("🚨 Predictive Collision Alert! Object approaching fast.")
+            print(" Predictive Collision Alert! Object approaching fast.")
             speed = 5
         elif distance < 20:
             speed = 5
@@ -74,11 +74,11 @@ def main():
 
         # === Surrounded Detection ===
         if scan_list.count(2) == 0:
-            print("⛔ Surrounded! Reversing...")
+            print(" Surrounded! Reversing...")
             fc.backward(speed)
             time.sleep(0.5)
             direction = "right" if last_turn == "left" else "left"
-            print(f"🔁 Turning {direction} to escape")
+            print(f" Turning {direction} to escape")
             curved_turn(direction, speed)
             time.sleep(0.5)
             last_turn = direction
@@ -95,11 +95,11 @@ def main():
                 direction = "right"
             else:
                 direction = "right" if last_turn == "left" else "left"
-            print(f"🔄 Turning {direction}")
+            print(f" Turning {direction}")
             curved_turn(direction, speed)
             last_turn = direction
         else:
-            print("✅ Path clear — Moving forward")
+            print(" Path clear — Moving forward")
             fc.forward(speed)
 
         time.sleep(0.15)
